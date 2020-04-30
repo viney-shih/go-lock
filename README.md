@@ -2,6 +2,7 @@
 
 [![GoDoc](https://godoc.org/github.com/viney-shih/go-lock?status.svg)](https://godoc.org/github.com/viney-shih/go-lock)
 [![Build Status](https://travis-ci.com/viney-shih/go-lock.svg?branch=master)](https://travis-ci.com/github/viney-shih/go-lock)
+[![License](http://img.shields.io/badge/License-Apache_2-red.svg?style=flat)](http://www.apache.org/licenses/LICENSE-2.0)
 
 **go-lock** is a Golang library implementing an effcient read-write lock with the following built-in mechanism:
 - Spinlock
