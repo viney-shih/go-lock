@@ -1,4 +1,7 @@
 # go-lock
+
+[![Build Status](https://travis-ci.com/viney-shih/go-lock.svg?branch=master)](https://travis-ci.com/github/viney-shih/go-lock)
+
 **go-lock** is a Golang library implementing an effcient read-write lock with the following built-in mechanism:
 - Spinlock
 - Trylock
