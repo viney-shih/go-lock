@@ -55,5 +55,13 @@ func main() {
 
 more [examples](./cas_test.go)
 
+## References
+- https://github.com/golang/go/issues/6123
+- https://github.com/LK4D4/trylock
+- https://github.com/OneOfOne/go-utils/tree/master/sync
+- https://github.com/lrita/gosync
+- https://github.com/google/netstack/blob/master/tmutex/tmutex.go
+- https://github.com/subchen/go-trylock
+
 ## License
 [Apache-2.0](https://opensource.org/licenses/Apache-2.0)
