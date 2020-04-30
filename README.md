@@ -14,7 +14,7 @@ Native`sync/Mutex` and `sync/RWMutex` are very powerful and reliable spinlock in
 ## Installation
 
 ```sh
-    go get github.com/viney-shih/go-lock
+go get github.com/viney-shih/go-lock
 ```
 
 ## Example
@@ -53,7 +53,8 @@ func main() {
 }
 ```
 
-more [examples](./cas_test.go)
+- [More examples](./cas_test.go)
+- [Full API documentation](https://godoc.org/github.com/viney-shih/go-lock)
 
 ## References
 - https://github.com/golang/go/issues/6123
