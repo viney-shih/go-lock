@@ -19,20 +19,20 @@ package main
 import (
     "fmt"
 
-	lock "github.com/viney-shih/go-lock"
+    lock "github.com/viney-shih/go-lock"
 )
 
 func main() {
     // init with default value
     casMut := lock.NewCASMutex()
-	count := int32(0)
+    count := int32(0)
 
-	casMut.Lock()
-	go func() {
-		time.Sleep(50 * time.Millisecond)
+    casMut.Lock()
+    go func() {
+        time.Sleep(50 * time.Millisecond)
         fmt.Println("Now is", atomic.AddInt32(&count, 1)) // Now is 1
-		casMut.Unlock()
-	}()
+        casMut.Unlock()
+    }()
 
     casMut.Lock()
     fmt.Println("Now is", atomic.AddInt32(&count, 2)) // Now is 3
@@ -41,7 +41,7 @@ func main() {
     casMut.Unlock()
 
     // Output:
-	// Now is 1
+    // Now is 1
     // Now is 3
     // Return false
     // Return false
