@@ -3,6 +3,7 @@
 [![GoDoc](https://godoc.org/github.com/viney-shih/go-lock?status.svg)](https://godoc.org/github.com/viney-shih/go-lock)
 [![Build Status](https://travis-ci.com/viney-shih/go-lock.svg?branch=master)](https://travis-ci.com/github/viney-shih/go-lock)
 [![Go Report Card](https://goreportcard.com/badge/github.com/viney-shih/go-lock)](https://goreportcard.com/report/github.com/viney-shih/go-lock)
+[![codecov](https://codecov.io/gh/viney-shih/go-lock/branch/master/graph/badge.svg)](https://codecov.io/gh/viney-shih/go-lock)
 [![Coverage Status](https://coveralls.io/repos/github/viney-shih/go-lock/badge.svg?branch=master)](https://coveralls.io/github/viney-shih/go-lock?branch=master)
 [![License](http://img.shields.io/badge/License-Apache_2-red.svg?style=flat)](http://www.apache.org/licenses/LICENSE-2.0)
 
