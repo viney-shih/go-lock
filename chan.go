@@ -34,9 +34,8 @@ func (m *chanMutex) TryLock() bool {
 	case m.lockChan <- struct{}{}:
 		return true
 	default:
+		return false
 	}
-
-	return false
 }
 
 func (m *chanMutex) TryLockWithTimeout(duration time.Duration) bool {
@@ -44,9 +43,8 @@ func (m *chanMutex) TryLockWithTimeout(duration time.Duration) bool {
 	case m.lockChan <- struct{}{}:
 		return true
 	case <-time.After(duration):
+		return false
 	}
-
-	return false
 }
 
 // NewChanMutex returns ChanMutex lock

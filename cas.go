@@ -41,28 +41,30 @@ type CASMutex interface {
 type casState int32
 
 const (
-	casStateUndefined casState = -2
-	casStateWriteLock casState = -1
-	casStateNoLock    casState = 0
-	casStateReadLock  casState = 1 // >= 1 stands for read lock
+	casStateUndefined casState = iota - 2 // -2
+	casStateWriteLock                     // -1
+	casStateNoLock                        // 0
+	casStateReadLock                      // >= 1
 )
 
 func (m *casMutex) getState(n int32) casState {
-	if n == int32(casStateNoLock) {
-		return casStateNoLock
-	} else if n == int32(casStateWriteLock) {
-		return casStateWriteLock
-	} else if n >= int32(casStateReadLock) {
+	switch st := casState(n); {
+	case st == casStateWriteLock:
+		fallthrough
+	case st == casStateNoLock:
+		return st
+	case st >= casStateReadLock:
 		return casStateReadLock
+	default:
+		// actually, it should not happened.
+		return casStateUndefined
 	}
-
-	// actually, it should not happened.
-	return casStateUndefined
 }
 
 type casMutex struct {
-	state         casState
-	turnstile     *semaphore.Weighted
+	state     casState
+	turnstile *semaphore.Weighted
+
 	broadcastChan chan struct{}
 	broadcastMut  sync.RWMutex
 }
