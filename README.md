@@ -22,34 +22,40 @@ go get github.com/viney-shih/go-lock
 package main
 
 import (
-    "fmt"
+	"fmt"
+	"sync/atomic"
+	"time"
 
-    lock "github.com/viney-shih/go-lock"
+	lock "github.com/viney-shih/go-lock"
 )
 
 func main() {
-    // init with default value
-    casMut := lock.NewCASMutex()
-    count := int32(0)
+	// initialized with default value
+	casMut := lock.NewCASMutex()
+	count := int32(0)
 
-    casMut.Lock()
-    go func() {
-        time.Sleep(50 * time.Millisecond)
-        fmt.Println("Now is", atomic.AddInt32(&count, 1)) // Now is 1
-        casMut.Unlock()
-    }()
+	casMut.Lock()
+	go func() {
+		time.Sleep(50 * time.Millisecond)
+		fmt.Println("Now is", atomic.AddInt32(&count, 1)) // Now is 1
+		casMut.Unlock()
+	}()
 
-    casMut.Lock()
-    fmt.Println("Now is", atomic.AddInt32(&count, 2)) // Now is 3
-    fmt.Println("Return", casMut.TryLock()) // Return false without blocking
-    fmt.Println("Return", casMut.RTryLockWithTimeout(50 * time.Millisecond)) // Return false without blocking
-    casMut.Unlock()
+	casMut.Lock()
+	fmt.Println("Now is", atomic.AddInt32(&count, 2)) // Now is 3
 
-    // Output:
-    // Now is 1
-    // Now is 3
-    // Return false
-    // Return false
+	// TryLock without blocking
+	fmt.Println("Return", casMut.TryLock()) // Return false
+
+	// RTryLockWithTimeout without blocking
+	fmt.Println("Return", casMut.RTryLockWithTimeout(50*time.Millisecond)) // Return false
+	casMut.Unlock()
+
+	// Output:
+	// Now is 1
+	// Now is 3
+	// Return false
+	// Return false
 }
 ```
 
