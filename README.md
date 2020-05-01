@@ -9,7 +9,7 @@
 - Trylock
 - No-starve read-write solution
 
-Native`sync/Mutex` and `sync/RWMutex` are very powerful and reliable spinlock in Golang. However, it became a disaster if the lock was not released as expected or someone was holding the lock too long at the peak time. Dealing with those cases, **go-lock** provides `TryLock` and `TryLockWithTimeout` function in addition to `Lock` and `Unlock`.
+Native `sync/Mutex` and `sync/RWMutex` are very powerful and reliable. However, it became a disaster if the lock was not released as expected or someone was holding the lock too long at the peak time. Dealing with those cases, **go-lock** provides TryLock and TryLockWithTimeout function in addition to Lock and Unlock.
 
 ## Installation
 
