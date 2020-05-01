@@ -22,6 +22,9 @@ type CASMutex interface {
 	// TryLockWithTimeout attempts to acquire the write lock within a period of time.
 	// Return false if spending time is more than duration and no chance to acquire it.
 	TryLockWithTimeout(time.Duration) bool
+	// TryLockWithContext attempts to acquire the write lock, blocking until resources
+	// are available or ctx is done (timeout or cancellation)
+	TryLockWithContext(ctx context.Context) bool
 	// Unlock releases the write lock
 	Unlock()
 
@@ -34,6 +37,9 @@ type CASMutex interface {
 	// RTryLockWithTimeout attempts to acquire the read lock within a period of time.
 	// Return false if spending time is more than duration and no chance to acquire it.
 	RTryLockWithTimeout(time.Duration) bool
+	// RTryLockWithContext attempts to acquire the read lock, blocking until resources
+	// are available or ctx is done (timeout or cancellation)
+	RTryLockWithContext(ctx context.Context) bool
 	// RUnlock releases the read lock
 	RUnlock()
 }
@@ -87,14 +93,6 @@ func (m *casMutex) broadcast() {
 	close(ch)
 }
 
-func (m *casMutex) Lock() {
-	ctx := context.Background()
-	m.turnstile.Acquire(ctx, 1)
-	defer m.turnstile.Release(1)
-
-	m.tryLock(ctx)
-}
-
 func (m *casMutex) tryLock(ctx context.Context) bool {
 	for {
 		broker := m.listen()
@@ -112,12 +110,29 @@ func (m *casMutex) tryLock(ctx context.Context) bool {
 
 		select {
 		case <-ctx.Done():
-			// timeout
+			// timeout or cancellation
 			return false
 		case <-broker:
 			// waiting for signal triggered by m.broadcast() and trying again.
 		}
 	}
+}
+
+func (m *casMutex) TryLockWithContext(ctx context.Context) bool {
+	if err := m.turnstile.Acquire(ctx, 1); err != nil {
+		// Acquire failed due to timeout or cancellation
+		return false
+	}
+
+	defer m.turnstile.Release(1)
+
+	return m.tryLock(ctx)
+}
+
+func (m *casMutex) Lock() {
+	ctx := context.Background()
+
+	m.TryLockWithContext(ctx)
 }
 
 func (m *casMutex) TryLock() bool {
@@ -134,14 +149,7 @@ func (m *casMutex) TryLockWithTimeout(duration time.Duration) bool {
 	ctx, cancel := context.WithTimeout(context.Background(), duration)
 	defer cancel()
 
-	if err := m.turnstile.Acquire(ctx, 1); err != nil {
-		// Acquire failed due to timeout
-		return false
-	}
-
-	defer m.turnstile.Release(1)
-
-	return m.tryLock(ctx)
+	return m.TryLockWithContext(ctx)
 }
 
 func (m *casMutex) Unlock() {
@@ -154,14 +162,6 @@ func (m *casMutex) Unlock() {
 	}
 
 	m.broadcast()
-}
-
-func (m *casMutex) RLock() {
-	ctx := context.Background()
-	m.turnstile.Acquire(ctx, 1)
-	m.turnstile.Release(1)
-
-	m.rTryLock(ctx)
 }
 
 func (m *casMutex) rTryLock(ctx context.Context) bool {
@@ -182,7 +182,7 @@ func (m *casMutex) rTryLock(ctx context.Context) bool {
 
 		select {
 		case <-ctx.Done():
-			// timeout
+			// timeout or cancellation
 			return false
 		default:
 			switch st {
@@ -195,12 +195,29 @@ func (m *casMutex) rTryLock(ctx context.Context) bool {
 
 		select {
 		case <-ctx.Done():
-			// timeout
+			// timeout or cancellation
 			return false
 		case <-broker:
 			// waiting for signal triggered by m.broadcast() and trying again.
 		}
 	}
+}
+
+func (m *casMutex) RTryLockWithContext(ctx context.Context) bool {
+	if err := m.turnstile.Acquire(ctx, 1); err != nil {
+		// Acquire failed due to timeout or cancellation
+		return false
+	}
+
+	m.turnstile.Release(1)
+
+	return m.rTryLock(ctx)
+}
+
+func (m *casMutex) RLock() {
+	ctx := context.Background()
+
+	m.RTryLockWithContext(ctx)
 }
 
 func (m *casMutex) RTryLock() bool {
@@ -217,14 +234,7 @@ func (m *casMutex) RTryLockWithTimeout(duration time.Duration) bool {
 	ctx, cancel := context.WithTimeout(context.Background(), duration)
 	defer cancel()
 
-	if err := m.turnstile.Acquire(ctx, 1); err != nil {
-		// Acquire failed due to timeout
-		return false
-	}
-
-	m.turnstile.Release(1)
-
-	return m.rTryLock(ctx)
+	return m.RTryLockWithContext(ctx)
 }
 
 func (m *casMutex) RUnlock() {

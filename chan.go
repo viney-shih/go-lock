@@ -1,6 +1,9 @@
 package lock
 
-import "time"
+import (
+	"context"
+	"time"
+)
 
 // ChanMutex provides interfaces of spinlock and trylock implemented by channel.
 type ChanMutex interface {
@@ -13,6 +16,9 @@ type ChanMutex interface {
 	// TryLockWithTimeout attempts to acquire the lock within a period of time.
 	// Return false if spending time is more than duration and no chance to acquire it.
 	TryLockWithTimeout(time.Duration) bool
+	// TryLockWithContext attempts to acquire the lock, blocking until resources
+	// are available or ctx is done (timeout or cancellation)
+	TryLockWithContext(ctx context.Context) bool
 	// Unlock releases the lock
 	Unlock()
 }
@@ -38,13 +44,21 @@ func (m *chanMutex) TryLock() bool {
 	}
 }
 
-func (m *chanMutex) TryLockWithTimeout(duration time.Duration) bool {
+func (m *chanMutex) TryLockWithContext(ctx context.Context) bool {
 	select {
 	case m.lockChan <- struct{}{}:
 		return true
-	case <-time.After(duration):
+	case <-ctx.Done():
+		// timeout or cancellation
 		return false
 	}
+}
+
+func (m *chanMutex) TryLockWithTimeout(duration time.Duration) bool {
+	ctx, cancel := context.WithTimeout(context.Background(), duration)
+	defer cancel()
+
+	return m.TryLockWithContext(ctx)
 }
 
 // NewChanMutex returns ChanMutex lock
