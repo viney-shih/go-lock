@@ -8,11 +8,11 @@
 [![License](http://img.shields.io/badge/License-Apache_2-red.svg?style=flat)](http://www.apache.org/licenses/LICENSE-2.0)
 
 **go-lock** is a Golang library implementing an effcient read-write lock with the following built-in mechanism:
-- Spinlock
+- Mutex
 - Trylock
 - No-starve read-write solution
 
-Native `sync/Mutex` and `sync/RWMutex` are very powerful and reliable. However, it became a disaster if the lock was not released as expected or someone was holding the lock too long at the peak time. Dealing with those cases, **go-lock** provides TryLock and TryLockWithTimeout function in addition to Lock and Unlock.
+Native `sync/Mutex` and `sync/RWMutex` are very powerful and reliable. However, it became a disaster if the lock was not released as expected. Or someone was holding the lock too long at the peak time. It slowed down whole system. Dealing with those cases, **go-lock** implements TryLock, TryLockWithTimeout and TryLockWithContext function in addition to Lock and Unlock. It provides flexibility to control the resources.
 
 ## Installation
 
