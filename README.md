@@ -7,6 +7,7 @@
 [![Codecov](https://codecov.io/gh/viney-shih/go-lock/branch/master/graph/badge.svg)](https://codecov.io/gh/viney-shih/go-lock)
 [![Coverage Status](https://coveralls.io/repos/github/viney-shih/go-lock/badge.svg?branch=master)](https://coveralls.io/github/viney-shih/go-lock?branch=master)
 [![License](http://img.shields.io/badge/License-Apache_2-red.svg?style=flat)](http://www.apache.org/licenses/LICENSE-2.0)
+[![Mentioned in Awesome Go](https://awesome.re/mentioned-badge.svg)](https://github.com/avelino/awesome-go#utilities)
 
 **go-lock** is a Golang library implementing an effcient read-write lock with the following built-in mechanism:
 - Mutex
