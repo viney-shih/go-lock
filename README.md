@@ -10,7 +10,7 @@
 [![Mentioned in Awesome Go](https://awesome.re/mentioned-badge.svg)](https://github.com/avelino/awesome-go#utilities)
 
 **go-lock** is a Golang library implementing an effcient read-write lock with the following built-in mechanism:
-- Mutex with timeout
+- Mutex with timeout mechanism
 - Trylock
 - No-starve read-write solution
 
