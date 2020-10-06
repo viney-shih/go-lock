@@ -10,6 +10,10 @@
 [![Sourcegraph](https://sourcegraph.com/github.com/viney-shih/go-lock/-/badge.svg)](https://sourcegraph.com/github.com/viney-shih/go-lock?badge)
 [![Mentioned in Awesome Go](https://awesome.re/mentioned-badge.svg)](https://github.com/avelino/awesome-go#utilities)
 
+<p align="center">
+  <img src="logo.png" title="go-lock" width="680" height="478" />
+</p>
+
 **go-lock** is a Golang library implementing an effcient read-write lock with the following built-in mechanism:
 - Mutex with timeout mechanism
 - Trylock
