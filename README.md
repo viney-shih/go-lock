@@ -19,7 +19,7 @@
 - Trylock
 - No-starve read-write solution
 
-Native `sync/Mutex` and `sync/RWMutex` are very powerful and reliable. However, it became a disaster if the lock was not released as expected. Or someone was holding the lock too long at the peak time. It slowed down whole system. Dealing with those cases, **go-lock** implements TryLock, TryLockWithTimeout and TryLockWithContext function in addition to Lock and Unlock. It provides flexibility to control the resources.
+Native `sync/Mutex` and `sync/RWMutex` are very powerful and reliable. However, it became a disaster if the lock was not released as expected. Or, someone was holding the lock too long at the peak time leading whole system blocked. Dealing with those cases, **go-lock** implements `TryLock`, `TryLockWithTimeout` and `TryLockWithContext` function in addition to Lock and Unlock. It provides flexibility to control the resources.
 
 ## Installation
 
@@ -40,7 +40,7 @@ import (
 )
 
 func main() {
-	// initialized with default value
+	// set default value
 	casMut := lock.NewCASMutex()
 	count := int32(0)
 
@@ -51,14 +51,16 @@ func main() {
 		casMut.Unlock()
 	}()
 
+	// waiting for previous goroutine releasing the lock, and locking it again
 	casMut.Lock()
 	fmt.Println("Now is", atomic.AddInt32(&count, 2)) // Now is 3
 
 	// TryLock without blocking
-	fmt.Println("Return", casMut.TryLock()) // Return false
+	fmt.Println("Return", casMut.TryLock()) // Return false, because the lock is not released.
 
 	// RTryLockWithTimeout without blocking
-	fmt.Println("Return", casMut.RTryLockWithTimeout(50*time.Millisecond)) // Return false
+	fmt.Println("Return", casMut.RTryLockWithTimeout(50*time.Millisecond)) // Return false, because the lock is not released.
+	// release the lock in the end.
 	casMut.Unlock()
 
 	// Output:
