@@ -9,6 +9,7 @@
 [![License](http://img.shields.io/badge/License-Apache_2-red.svg?style=flat)](http://www.apache.org/licenses/LICENSE-2.0)
 [![Sourcegraph](https://sourcegraph.com/github.com/viney-shih/go-lock/-/badge.svg)](https://sourcegraph.com/github.com/viney-shih/go-lock?badge)
 [![Mentioned in Awesome Go](https://awesome.re/mentioned-badge.svg)](https://github.com/avelino/awesome-go#utilities)
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fviney-shih%2Fgo-lock.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2Fviney-shih%2Fgo-lock?ref=badge_shield)
 
 <p align="center">
   <img src="logo.png" title="go-lock" />
@@ -169,3 +170,6 @@ PASS
 
 ## License
 [Apache-2.0](https://opensource.org/licenses/Apache-2.0)
+
+
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fviney-shih%2Fgo-lock.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2Fviney-shih%2Fgo-lock?ref=badge_large)
