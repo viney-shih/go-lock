@@ -6,7 +6,6 @@
 [![Go Report Card](https://goreportcard.com/badge/github.com/viney-shih/go-lock)](https://goreportcard.com/report/github.com/viney-shih/go-lock)
 [![Codecov](https://codecov.io/gh/viney-shih/go-lock/branch/master/graph/badge.svg)](https://codecov.io/gh/viney-shih/go-lock)
 [![Coverage Status](https://coveralls.io/repos/github/viney-shih/go-lock/badge.svg?branch=master)](https://coveralls.io/github/viney-shih/go-lock?branch=master)
-[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fviney-shih%2Fgo-lock.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2Fviney-shih%2Fgo-lock?ref=badge_shield)
 [![License](http://img.shields.io/badge/License-Apache_2-red.svg?style=flat)](http://www.apache.org/licenses/LICENSE-2.0)
 [![Sourcegraph](https://sourcegraph.com/github.com/viney-shih/go-lock/-/badge.svg)](https://sourcegraph.com/github.com/viney-shih/go-lock?badge)
 [![Mentioned in Awesome Go](https://awesome.re/mentioned-badge.svg)](https://github.com/avelino/awesome-go#utilities)
