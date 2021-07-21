@@ -12,7 +12,7 @@
 [![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fviney-shih%2Fgo-lock.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2Fviney-shih%2Fgo-lock?ref=badge_shield)
 
 <p align="center">
-  <img src="logo.png" title="go-lock" />
+  <img src="assets/logo.png" title="go-lock" />
 </p>
 
 **go-lock** is a Golang library implementing an effcient read-write lock with the following built-in mechanism:
