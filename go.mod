@@ -1,6 +1,6 @@
 module github.com/viney-shih/go-lock
 
-go 1.14
+go 1.16
 
 require (
 	github.com/stretchr/testify v1.5.1
