@@ -10,7 +10,7 @@ before_install:
 
 script:
     - go test -v -race -covermode=atomic -coverprofile=coverage.out
-    - $GOPATH/bin/goveralls -coverprofile=coverage.out -service=travis-ci
 
 after_success:
-    - bash <(curl -s https://codecov.io/bash)
+    - $GOPATH/bin/goveralls -coverprofile=coverage.out -service=travis-ci # upload to `coveralls`
+    - bash <(curl -s https://codecov.io/bash) # upload to `codecov`
