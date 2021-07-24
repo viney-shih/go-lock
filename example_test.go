@@ -9,7 +9,7 @@ import (
 	"github.com/viney-shih/go-lock"
 )
 
-func ExampleChanMutex() {
+func ExampleCASMutex() {
 	// set RWMutex with CAS mechanism (CASMutex).
 	var rwMut lock.RWMutex = lock.NewCASMutex()
 	// set default value
