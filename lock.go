@@ -1,7 +1,7 @@
 // Package go-lock is a Golang library implementing an effcient read-write lock with the following built-in mechanism:
-// - Mutex with timeout mechanism
-// - Trylock
-// - No-starve read-write solution
+// 1) Mutex with timeout mechanism
+// 2) Trylock
+// 3) No-starve read-write solution
 package lock
 
 import (
