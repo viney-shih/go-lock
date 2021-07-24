@@ -1,6 +1,5 @@
 # go-lock
 
-[![GoDoc](https://godoc.org/github.com/viney-shih/go-lock?status.svg)](https://godoc.org/github.com/viney-shih/go-lock)
 [![GoDev](https://img.shields.io/badge/go.dev-doc-007d9c?style=flat-square&logo=read-the-docs)](https://pkg.go.dev/github.com/viney-shih/go-lock?tab=doc)
 [![Build Status](https://travis-ci.com/viney-shih/go-lock.svg?branch=master)](https://travis-ci.com/github/viney-shih/go-lock)
 [![Go Report Card](https://goreportcard.com/badge/github.com/viney-shih/go-lock)](https://goreportcard.com/report/github.com/viney-shih/go-lock)
@@ -41,39 +40,51 @@ import (
 )
 
 func main() {
+	// set RWMutex with CAS mechanism (CASMutex).
+	var rwMut lock.RWMutex = lock.NewCASMutex()
 	// set default value
-	casMut := lock.NewCASMutex()
 	count := int32(0)
 
-	casMut.Lock()
+	// block here
+	rwMut.Lock()
 	go func() {
 		time.Sleep(50 * time.Millisecond)
 		fmt.Println("Now is", atomic.AddInt32(&count, 1)) // Now is 1
-		casMut.Unlock()
+		rwMut.Unlock()
 	}()
 
 	// waiting for previous goroutine releasing the lock, and locking it again
-	casMut.Lock()
+	rwMut.Lock()
 	fmt.Println("Now is", atomic.AddInt32(&count, 2)) // Now is 3
 
 	// TryLock without blocking
-	fmt.Println("Return", casMut.TryLock()) // Return false, because the lock is not released.
+	// Return false, because the lock is not released.
+	fmt.Println("Return", rwMut.TryLock())
 
 	// RTryLockWithTimeout without blocking
-	fmt.Println("Return", casMut.RTryLockWithTimeout(50*time.Millisecond)) // Return false, because the lock is not released.
+	// Return false, because the lock is not released.
+	fmt.Println("Return", rwMut.RTryLockWithTimeout(50*time.Millisecond))
+
+	// TryLockWithContext without blocking
+	ctx, cancel := context.WithTimeout(context.TODO(), 50*time.Millisecond)
+	defer cancel()
+	// Return false, because the lock is not released.
+	fmt.Println("Return", rwMut.TryLockWithContext(ctx))
+
 	// release the lock in the end.
-	casMut.Unlock()
+	rwMut.Unlock()
 
 	// Output:
 	// Now is 1
 	// Now is 3
 	// Return false
 	// Return false
+	// Return false
 }
 ```
 
 - [More examples](./cas_test.go)
-- [Full API documentation](https://godoc.org/github.com/viney-shih/go-lock)
+- [Full API documentation](https://pkg.go.dev/github.com/viney-shih/go-lock?tab=doc)
 
 ## Benchmarks
 - Run on MacBook Pro (Retina, 15-inch, Mid 2015) 2.5 GHz Quad-Core Intel Core i7 16 GB 1600 MHz DDR3 using Go 1.15.2
